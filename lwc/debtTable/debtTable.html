@@ -1,0 +1,61 @@
+<template>
+    <lightning-card class="mainCard">
+        <div class="slds-card__body slds-card__body_inner">
+            
+            <!--Datatable for displaying data from endpoint and any data manually added-->
+            <div class="slds-table slds-border_left slds-border_right slds-table_bordered slds-table_col-bordered">
+                <lightning-datatable
+                        key-field="id"
+                        data={debtData}
+                        columns={dataTableColumns}
+                        onrowselection={handleRowSelection}>
+                </lightning-datatable>
+            </div>
+            
+            <!--Section for allowing a row to be added to table-->
+            <template if:true={showAddDebtSection}>
+                <br/>
+                <lightning-layout> 
+                    <lightning-layout-item flexibility="auto" class="slds-p-right_x-small">
+                        <lightning-input type="text" label="Creditor" value={creditorName} onchange={creditorValueUpdate}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" class="slds-p-right_x-small">
+                        <lightning-input type="text" label="First Name" value={firstName} onchange={fNameValueUpdate}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" class="slds-p-right_x-small">
+                        <lightning-input type="text" label="Last Name" value={lastName} onchange={lNameValueUpdate}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" class="slds-p-right_x-small">
+                        <lightning-input type="number" label="Min Pay%" placeholder="0.00%" value={minPaymentPercentage} formatter="percent" step="0.0001" onchange={minPayValueUpdate}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-input type="number" label="Balance" placeholder="$0.00" value={balance} formatter="currency" step="0.01" onchange={balanceValueUpdate}></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <lightning-layout horizontal-align="end">
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <lightning-button variant="brand" label="Save" title="Save" onclick={saveDebtAddition} class="slds-m-top_medium"></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <lightning-button variant="brand" label="Cancel" title="Cancel" onclick={hideAddDebtSection} class="slds-m-left_x-small"></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+            <br/>
+
+            <!--Add/Remove buttons-->
+            <lightning-button variant="brand" label="ADD DEBT" title="Add Debt" onclick={handleAddBtnClick} class="slds-m-top_medium"></lightning-button>
+            <lightning-button variant="brand" label="REMOVE DEBT" title="Remove Debt" onclick={handleRemoveBtnClick} class="slds-m-left_x-small"></lightning-button>
+            
+            <!--Summary section-->
+            <div class="slds-m-top_xx-small" style="background-color:lightblue">
+                <b>Total</b>
+                <p style="float:right"><lightning-formatted-number value={totalDebt} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+            </div>
+            <div>
+                <b>Total Row Count: {totalRowCount}</b> 
+               <span style="margin-left:10%"><b>Check Row Count: {totalCheckedRowCount}</b></span>
+            </div>
+        </div> 
+    </lightning-card>
+</template>
